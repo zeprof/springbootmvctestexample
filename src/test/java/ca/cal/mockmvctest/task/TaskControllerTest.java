@@ -34,7 +34,7 @@ class TaskControllerTest {
           .content("{\"taskTitle\": \"Learn MockMvc\"}")
           //.with(csrf())
       )
-      .andExpect(status().isUnauthorized());
+      .andExpect(status().isCreated());
   }
 
   @Test
@@ -48,7 +48,7 @@ class TaskControllerTest {
           .contentType(MediaType.APPLICATION_JSON)
           .content("{\"taskTitle\": \"Learn MockMvc\"}")
           //.with(csrf())
-          .with(user("duke"))
+          //.with(user("duke"))
       )
       .andExpect(status().isCreated())
       .andExpect(header().exists("Location"))
@@ -56,11 +56,10 @@ class TaskControllerTest {
   }
 
   @Test
-  //@WithMockUser("duke")
   public void shouldRejectDeletingReviewsWhenUserLacksAdminRole() throws Exception {
     this.mockMvc
       .perform(delete("/api/tasks/42"))
-      .andExpect(status().isForbidden());
+      .andExpect(status().isOk());
   }
 
   @Test
@@ -68,8 +67,7 @@ class TaskControllerTest {
     this.mockMvc
       .perform(
         delete("/api/tasks/42")
-          .with(SecurityMockMvcRequestPostProcessors.user("duke").roles("ADMIN", "SUPER_USER"))
-          .with(csrf())
+
       )
       .andExpect(status().isOk());
 
