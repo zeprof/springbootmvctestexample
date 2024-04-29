@@ -20,10 +20,10 @@ public class TaskController {
   @PostMapping
   public ResponseEntity<Void> createNewTask(@RequestBody JsonNode payload, UriComponentsBuilder uriComponentsBuilder) {
 
-    Long taskId = this.taskService.createTask(payload.get("taskTitle").asText());
+    Long taskId = taskService.createTask(payload.get("taskTitle").asText());
 
     return ResponseEntity
-      .created(uriComponentsBuilder.path("/api/tasks/{taskId}").build(taskId))
+      .created(uriComponentsBuilder.path("/api/task/{taskId}").build(taskId))
       .build();
   }
 
@@ -33,4 +33,6 @@ public class TaskController {
   public void deleteTask(@PathVariable Long taskId) {
     this.taskService.deleteTask(taskId);
   }
+
+
 }
